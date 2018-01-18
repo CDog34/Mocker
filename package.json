@@ -1,0 +1,15 @@
+{
+  "name": "mocker",
+  "version": "1.0.0",
+  "description": "开箱即用的 Mock Server ",
+  "main": "app.js",
+  "registry": "https://github.com/CDog34/Mocker",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cao Junquan <caojunquan@bilibili.com>",
+  "license": "MIT",
+  "dependencies": {
+    "url-parse": "1.2.0"
+  }
+}

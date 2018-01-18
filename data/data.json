@@ -1,0 +1,11 @@
+{
+  "mockConfigs": {
+    "example.com": {
+      "/test": {
+        "code": 0,
+        "msg": "", 
+        "data": ["hahaha"]
+      }
+    }
+  }
+}

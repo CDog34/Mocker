@@ -56,7 +56,12 @@ const server = http.createServer((req, res) => {
           method: req.method,
           path: req.url
         }, function (outResponse) {
-          outResponse.pipe(res);
+          outResponse.pause()
+          res.writeHead(outResponse.statusCode, outResponse.headers)
+          outResponse.pipe(res, {
+            end: true
+          })
+          outResponse.resume()
           outResponse.on('end', function () {
             console.log(`Proxy ${req.url}`)
           })
@@ -73,11 +78,9 @@ const server = http.createServer((req, res) => {
           res.end('Err', 500)
           return
         })
-        if (/POST|PUT/i.test(req.method)) {
-          req.pipe(outRequest);
-        } else {
-          outRequest.end();
-        }
+        req.pipe(outRequest, {
+          end: true
+        })
       })
       return
     } catch (err) {

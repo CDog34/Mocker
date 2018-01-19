@@ -3,7 +3,7 @@
     "example.com": {
       "/test": {
         "code": 0,
-        "msg": "", 
+        "msg": "",
         "data": ["hahaha"]
       }
     }

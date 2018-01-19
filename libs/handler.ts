@@ -3,7 +3,7 @@ import { IncomingMessage, request as httpRequest, ServerResponse } from 'http'
 import * as path from 'path'
 import * as urlParse from 'url-parse'
 import { promisify } from 'util'
-import { existAsync } from './fs'
+import {existAsync, readFileAsync} from './fs'
 
 const DATA_JSON_FILE_PATH = path.resolve(__dirname, '../data/data.json')
 const dnsLookup = promisify(dns.lookup)
@@ -36,8 +36,13 @@ async function handler (req: IncomingMessage, res: ServerResponse) {
   }
 
   // Read its content.
-  const dataJsonContent = require(DATA_JSON_FILE_PATH)
-  const mockConfig: IMockConfig = dataJsonContent.mockConfigs || {}
+  let mockConfig: IMockConfig
+  try {
+    const { data: dataJsonContent } = await readMockData()
+    mockConfig = dataJsonContent.mockConfigs || {}
+  } catch (error) {
+    return responseToClient(res, 500, 'Failed to read mocking data from file: ' + error.message)
+  }
 
   if (!checkHostIsKnown(requestHost, mockConfig)) {
     return responseToClient(res, 404, 'No mocking data found')
@@ -65,6 +70,14 @@ async function handler (req: IncomingMessage, res: ServerResponse) {
 
 export {
   handler,
+}
+
+async function readMockData (): Promise<IAsyncData<IDataJson>> {
+  const dataJsonContent = await readFileAsync(DATA_JSON_FILE_PATH, 'utf-8')
+  return {
+    data: JSON.parse(dataJsonContent),
+    error: null
+  }
 }
 
 /**
@@ -178,6 +191,10 @@ function proxying (req: IncomingMessage, res: ServerResponse): void {
   req.pipe(proxyRequest, {
     end: true
   })
+}
+
+interface IDataJson {
+  mockConfigs: IMockConfig
 }
 
 interface IMockConfig {

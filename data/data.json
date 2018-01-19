@@ -5,6 +5,19 @@
         "code": 0,
         "msg": "",
         "data": ["hahaha"]
+      },
+      "/api/v1/username": {
+        "code": 0,
+        "message": "",
+        "data": {
+          "id":  1,
+          "username": "admin"
+        }
+      },
+      "/api/v1/login": {
+        "code": 0,
+        "message": "OK",
+        "data": null
       }
     }
   }

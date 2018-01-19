@@ -40,8 +40,14 @@ function handler(req, res) {
             return responseToClient(res, 500, 'Mock config file is not exist');
         }
         // Read its content.
-        const dataJsonContent = require(DATA_JSON_FILE_PATH);
-        const mockConfig = dataJsonContent.mockConfigs || {};
+        let mockConfig;
+        try {
+            const { data: dataJsonContent } = yield readMockData();
+            mockConfig = dataJsonContent.mockConfigs || {};
+        }
+        catch (error) {
+            return responseToClient(res, 500, 'Failed to read mocking data from file: ' + error.message);
+        }
         if (!checkHostIsKnown(requestHost, mockConfig)) {
             return responseToClient(res, 404, 'No mocking data found');
         }
@@ -63,6 +69,15 @@ function handler(req, res) {
     });
 }
 exports.handler = handler;
+function readMockData() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const dataJsonContent = yield fs_1.readFileAsync(DATA_JSON_FILE_PATH, 'utf-8');
+        return {
+            data: JSON.parse(dataJsonContent),
+            error: null
+        };
+    });
+}
 /**
  * Send response to client.
  *

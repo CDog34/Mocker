@@ -5,11 +5,16 @@
   "main": "app.js",
   "registry": "https://github.com/CDog34/Mocker",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsc --watch",
+    "start": "node ./app.js"
   },
   "author": "Cao Junquan <caojunquan@bilibili.com>",
   "license": "MIT",
   "dependencies": {
     "url-parse": "1.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.0",
+    "@types/url-parse": "^1.1.0"
   }
 }

@@ -11,7 +11,7 @@
   "author": "Cao Junquan <caojunquan@bilibili.com>",
   "license": "MIT",
   "dependencies": {
-    "url-parse": "1.2.0"
+    "url-parse": "1.4.7"
   },
   "devDependencies": {
     "@types/node": "^8.0.0",
